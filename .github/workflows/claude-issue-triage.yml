@@ -1,0 +1,47 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read      # checkout + leer game.js/README para el diagnóstico
+      issues: write       # añadir labels y publicar comentario
+      id-token: write     # requerido por claude-code-action (OIDC)
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Issue Triage
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--allowed-tools "Bash(gh label list:*),Bash(gh issue view:*),Bash(gh issue edit:*),Bash(gh issue comment:*)"'
+          prompt: |
+            Analiza el issue #${{ github.event.issue.number }} del repositorio ${{ github.repository }}.
+
+            Pasos:
+            1. Lee el título y cuerpo del issue con: gh issue view ${{ github.event.issue.number }}
+            2. Obtén las labels disponibles con: gh label list
+            3. Revisa el código relevante del repo (game.js, index.html, style.css, README.md)
+               para entender el contexto técnico del problema.
+            4. Asigna SOLO labels existentes que apliquen con:
+               gh issue edit ${{ github.event.issue.number }} --add-label "<label>"
+               (No crees labels nuevas. Si ninguna aplica claramente, no añadas ninguna.)
+            5. Publica UN comentario con un diagnóstico técnico usando:
+               gh issue comment ${{ github.event.issue.number }} --body "<diagnóstico>"
+
+            El diagnóstico debe incluir:
+            - Resumen del problema o solicitud.
+            - Archivos/funciones probablemente implicados (ej. game.js: lockPiece, clearLines).
+            - Enfoque sugerido para implementar la solución.
+            - Preguntas abiertas o riesgos, si los hay.
+
+            Responde en español. Sé conciso y técnico.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
