@@ -42,6 +42,10 @@ jobs:
             - Enfoque sugerido para implementar la solución.
             - Preguntas abiertas o riesgos, si los hay.
 
+            El comentario debe estar escrito en formato Markdown compatible con GitHub
+            (usa encabezados, listas y bloques de código con backticks para nombres de
+            archivo/función según corresponda).
+
             Responde en español. Sé conciso y técnico.
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
