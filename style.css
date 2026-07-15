@@ -13,6 +13,7 @@
   --board-shadow: rgba(0, 0, 0, 0.6);
   --grid-line: #22222e;
   --block-highlight: rgba(255, 255, 255, 0.12);
+  --ghost-alpha: 0.2;
   --label-color: #555570;
   --value-color: #7aa2f7;
   --kbd-bg: #22223a;
@@ -36,6 +37,7 @@
   --board-shadow: rgba(0, 0, 0, 0.15);
   --grid-line: #d9deed;
   --block-highlight: rgba(255, 255, 255, 0.45);
+  --ghost-alpha: 0.4;
   --label-color: #6b7290;
   --value-color: #3b5bdb;
   --kbd-bg: #e4e8f5;
