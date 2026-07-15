@@ -203,10 +203,11 @@ function draw() {
 
   // ghost
   const gy = ghostY();
+  const ghostAlpha = parseFloat(themeColor('--ghost-alpha')) || 0.2;
   for (let r = 0; r < current.shape.length; r++)
     for (let c = 0; c < current.shape[r].length; c++)
       if (current.shape[r][c])
-        drawBlock(ctx, current.x + c, gy + r, current.shape[r][c], BLOCK, 0.2);
+        drawBlock(ctx, current.x + c, gy + r, current.shape[r][c], BLOCK, ghostAlpha);
 
   // current piece
   for (let r = 0; r < current.shape.length; r++)
