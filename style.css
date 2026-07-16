@@ -134,12 +134,60 @@ body {
   align-items: flex-start;
 }
 
+.board-wrap {
+  position: relative;
+}
+
 #board {
   display: block;
   border: 1px solid var(--board-border);
   background: var(--board-bg);
   border-radius: 4px;
   box-shadow: 0 0 40px var(--board-shadow);
+}
+
+/* ---- Combo x2 ---- */
+.combo-msg {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--overlay-title-color);
+  text-shadow: 0 0 12px var(--overlay-title-color);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.combo-msg.hidden {
+  display: none;
+}
+
+.combo-msg-anim {
+  animation: combo-pop 1.2s ease-out;
+}
+
+@keyframes combo-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -55%) scale(1);
+  }
 }
 
 /* ---- Panel lateral ---- */

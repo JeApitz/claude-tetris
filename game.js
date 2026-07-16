@@ -42,10 +42,11 @@ const overlayTitle = document.getElementById('overlay-title');
 const overlayScore = document.getElementById('overlay-score');
 const restartBtn = document.getElementById('restart-btn');
 const themeSwitch = document.getElementById('theme-switch');
+const comboMsg = document.getElementById('combo-msg');
 
 const THEME_KEY = 'tetris-theme';
 
-let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
+let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId, lastClearWasLine, comboMsgTimeout;
 
 function createBoard() {
   return Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
@@ -110,11 +111,32 @@ function clearLines() {
   }
   if (cleared) {
     lines += cleared;
-    score += (LINE_SCORES[cleared] || 0) * level;
+    const base = (LINE_SCORES[cleared] || 0) * level;
+    if (lastClearWasLine) {
+      score += base * 2;
+      showComboMessage();
+    } else {
+      score += base;
+    }
+    lastClearWasLine = true;
     level = Math.floor(lines / 10) + 1;
     dropInterval = Math.max(100, 1000 - (level - 1) * 90);
     updateHUD();
+  } else {
+    lastClearWasLine = false;
   }
+}
+
+function showComboMessage() {
+  comboMsg.textContent = '¡PUNTUACIÓN x2!';
+  comboMsg.classList.remove('hidden');
+  comboMsg.classList.remove('combo-msg-anim');
+  void comboMsg.offsetWidth; // forzar reflow para reiniciar la animación
+  comboMsg.classList.add('combo-msg-anim');
+  clearTimeout(comboMsgTimeout);
+  comboMsgTimeout = setTimeout(() => {
+    comboMsg.classList.add('hidden');
+  }, 1200);
 }
 
 function ghostY() {
@@ -290,6 +312,9 @@ function init() {
   gameOver = false;
   dropInterval = 1000;
   dropAccum = 0;
+  lastClearWasLine = false;
+  clearTimeout(comboMsgTimeout);
+  comboMsg.classList.add('hidden');
   lastTime = performance.now();
   next = randomPiece();
   spawn();
