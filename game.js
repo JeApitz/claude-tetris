@@ -260,6 +260,7 @@ function loop(ts) {
       lockPiece();
     }
   }
+  if (gameOver || paused) return;
   draw();
   animId = requestAnimationFrame(loop);
 }
