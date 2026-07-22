@@ -7,12 +7,19 @@
   <link rel="stylesheet" href="style.css" />
   <script>
     document.documentElement.dataset.theme = localStorage.getItem('tetris-theme') === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.skin = localStorage.getItem('tetris-skin') || 'retro';
   </script>
 </head>
 <body>
   <div class="wrapper">
     <div class="header-row">
       <h1 class="game-title">TETRIS</h1>
+      <select id="skin-select" class="skin-select" title="Cambiar skin">
+        <option value="retro">Retro</option>
+        <option value="neon">Neon</option>
+        <option value="pastel">Pastel</option>
+        <option value="pixelart">Pixel Art</option>
+      </select>
       <label class="theme-toggle" for="theme-switch" title="Cambiar tema">
         <span class="theme-icon">🌙</span>
         <input type="checkbox" id="theme-switch" />
