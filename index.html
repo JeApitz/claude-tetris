@@ -7,12 +7,19 @@
   <link rel="stylesheet" href="style.css" />
   <script>
     document.documentElement.dataset.theme = localStorage.getItem('tetris-theme') === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.skin = localStorage.getItem('tetris-skin') || 'retro';
   </script>
 </head>
 <body>
   <div class="wrapper">
     <div class="header-row">
       <h1 class="game-title">TETRIS</h1>
+      <select id="skin-select" class="skin-select" title="Cambiar skin">
+        <option value="retro">Retro</option>
+        <option value="neon">Neon</option>
+        <option value="pastel">Pastel</option>
+        <option value="pixelart">Pixel Art</option>
+      </select>
       <label class="theme-toggle" for="theme-switch" title="Cambiar tema">
         <span class="theme-icon">🌙</span>
         <input type="checkbox" id="theme-switch" />
@@ -45,6 +52,16 @@
           <canvas id="next-canvas" width="120" height="120"></canvas>
         </div>
 
+        <div class="panel-section highscores-section">
+          <span class="label">RECORDS</span>
+          <ol id="highscores-list" class="highscores-list"></ol>
+          <div class="stats-row">
+            <span>Mejor combo <strong id="best-combo-stat">0</strong></span>
+            <span>Líneas máx <strong id="max-lines-stat">0</strong></span>
+          </div>
+          <button id="reset-scores-btn" class="reset-btn">Resetear récords</button>
+        </div>
+
         <div class="panel-section controls">
           <span class="label">CONTROLS</span>
           <ul>
@@ -62,7 +79,50 @@
       <div class="overlay-box">
         <p id="overlay-title">GAME OVER</p>
         <p id="overlay-score"></p>
+        <div id="new-highscore-form" class="new-highscore-form hidden">
+          <p class="highscore-msg">¡Nuevo récord! Introduce tu nombre:</p>
+          <input type="text" id="player-name-input" maxlength="12" placeholder="Nombre" autocomplete="off" />
+          <button id="save-score-btn">Guardar</button>
+        </div>
+        <ol id="overlay-highscores-list" class="highscores-list"></ol>
         <button id="restart-btn">Reiniciar</button>
+      </div>
+    </div>
+
+    <div id="pause-overlay" class="overlay hidden">
+      <div class="overlay-box pause-box">
+        <div id="pause-main" class="pause-view">
+          <p id="pause-title">PAUSA</p>
+          <button id="resume-btn" class="menu-btn">Reanudar</button>
+          <button id="pause-restart-btn" class="menu-btn">Reiniciar</button>
+          <button id="show-controls-btn" class="menu-btn">Ver controles</button>
+          <div class="level-select-row">
+            <label for="start-level-select">Nivel inicial</label>
+            <select id="start-level-select">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+        </div>
+        <div id="pause-controls" class="pause-view hidden">
+          <p id="pause-title">CONTROLES</p>
+          <ul class="pause-controls-list">
+            <li><kbd>←</kbd><kbd>→</kbd> mover</li>
+            <li><kbd>↑</kbd> rotar</li>
+            <li><kbd>↓</kbd> bajar</li>
+            <li><kbd>Space</kbd> caída</li>
+            <li><kbd>P</kbd> / <kbd>Esc</kbd> pausa</li>
+          </ul>
+          <button id="back-btn" class="menu-btn">Volver</button>
+        </div>
       </div>
     </div>
   </div>
